@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción de Mensaje</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        // Función para copiar la pregunta seleccionada al textarea
+        function seleccionarPregunta() {
+            const lista = document.getElementById('lista-preguntas');
+            const preguntaSeleccionada = lista.value; // Obtener el valor seleccionado
+            document.getElementById('mensaje').value = preguntaSeleccionada; // Copiar al textarea
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1> Bienvenido a EcoBot</h1>
+        <p style="text-align: justify; font-weight: bold; font-family: 'Arial', sans-serif;">
+            Este chatbot está diseñado para responder preguntas relacionadas con temas de energías renovables, impacto ambiental, comparaciones con combustibles fósiles y más. 
+            Utiliza inteligencia artificial para analizar las consultas y proporcionar predicciones o respuestas precisas basadas en la información ingresada. 
+            También ofrece una lista de preguntas sugeridas para facilitar la interacción.
+        </p>
+        
+        <!-- Lista desplegable de preguntas sugeridas -->
+        <div id="preguntas-sugeridas">
+            <h3>Selecciona una pregunta sugerida:</h3>
+            <select id="lista-preguntas" onchange="seleccionarPregunta()">
+                <option value="" disabled selected>-- Selecciona una pregunta --</option>
+                <!-- Saludos -->
+                <option value="Hola">Hola</option>
+                <option value="Buenas tardes">Buenas tardes</option>
+                <option value="Buen día">Buen día</option>
+                <option value="Buenas noches">Buenas noches</option>
+                <option value="¿Cómo estás?">¿Cómo estás?</option>
+                <option value="Hola, ¿me ayudas?">Hola, ¿me ayudas?</option>
+
+                <!-- Identidad del Asistente -->
+                <option value="¿Cuál es tu nombre?">¿Cuál es tu nombre?</option>
+
+                <!-- Energías Renovables: Tipos y Ejemplos -->
+                <option value="¿Qué tipos de energías renovables existen?">¿Qué tipos de energías renovables existen?</option>
+                <option value="¿Cuáles son las energías renovables principales?">¿Cuáles son las energías renovables principales?</option>
+                <option value="Menciona ejemplos de energías renovables">Menciona ejemplos de energías renovables</option>
+                <option value="¿Qué fuentes de energía limpia existen?">¿Qué fuentes de energía limpia existen?</option>
+
+                <!-- Energías Renovables: Impacto Ambiental -->
+                <option value="¿Cómo ayudan las energías renovables al medio ambiente?">¿Cómo ayudan las energías renovables al medio ambiente?</option>
+                <option value="¿Son las energías renovables 100% limpias?">¿Son las energías renovables 100% limpias?</option>
+                <option value="¿Qué impacto ambiental tiene la biomasa?">¿Qué impacto ambiental tiene la biomasa?</option>
+                <option value="¿La energía eólica afecta a la fauna?">¿La energía eólica afecta a la fauna?</option>
+                <option value="¿El uso de energías renovables afecta la biodiversidad?">¿El uso de energías renovables afecta la biodiversidad?</option>
+
+                <!-- Energías Renovables: Comparaciones -->
+                <option value="¿Qué ventajas tienen las energías renovables sobre los combustibles fósiles?">¿Qué ventajas tienen las energías renovables sobre los combustibles fósiles?</option>
+                <option value="¿Son más baratas las energías renovables que las fósiles?">¿Son más baratas las energías renovables que las fósiles?</option>
+                <option value="¿Por qué son mejores las energías renovables que las fósiles?">¿Por qué son mejores las energías renovables que las fósiles?</option>
+                <option value="¿Qué tan eficientes son las energías renovables comparadas con las fósiles?">¿Qué tan eficientes son las energías renovables comparadas con las fósiles?</option>
+
+                <!-- Energías Renovables: Retos -->
+                <option value="¿Cuáles son los retos de las energías renovables?">¿Cuáles son los retos de las energías renovables?</option>
+                <option value="¿Es posible depender solo de energías renovables?">¿Es posible depender solo de energías renovables?</option>
+                <option value="¿Qué barreras existen para la adopción de energías renovables?">¿Qué barreras existen para la adopción de energías renovables?</option>
+
+                <!-- Países y Energías Renovables -->
+                <option value="¿Qué país lidera en energía solar?">¿Qué país lidera en energía solar?</option>
+                <option value="¿Qué país es modelo en energías renovables?">¿Qué país es modelo en energías renovables?</option>
+                <option value="¿Qué país utiliza casi el 100% de energías renovables para su electricidad?">¿Qué país utiliza casi el 100% de energías renovables para su electricidad?</option>
+                <option value="¿Qué país tiene la mayor capacidad de energía eólica?">¿Qué país tiene la mayor capacidad de energía eólica?</option>
+                <option value="¿Qué país tiene la mayor planta de energía solar de concentración?">¿Qué país tiene la mayor planta de energía solar de concentración?</option>
+
+                <!-- Despedidas -->
+                <option value="Gracias">Gracias</option>
+                <option value="Adiós">Adiós</option>
+                <option value="Nos vemos">Nos vemos</option>
+                <option value="Hasta luego">Hasta luego</option>
+                <option value="¡Cuídate mucho!">¡Cuídate mucho!</option>
+                <option value="¡Nos vemos pronto!">¡Nos vemos pronto!</option>
+            </select>
+        </div>
+        <br>
+        
+        <!-- Formulario para ingresar un mensaje -->
+        <form action="/predict" method="POST">
+            <label for="mensaje">Ingrese el mensaje:</label>
+            <textarea name="mensaje" id="mensaje" rows="4" cols="50" required></textarea>
+            <br>
+            <button type="submit">Predecir</button>
+        </form>
+        
+        {% if mensaje %}
+        <h3 style="font-family: 'Roboto', sans-serif;">Mensaje ingresado:</h3>
+        <p style="font-family: 'Roboto', sans-serif;">{{ mensaje }}</p>
+        
+        <h3 style="font-family: 'Roboto', sans-serif;">Predicción:</h3>
+        <p style="font-family: 'Roboto', sans-serif;">{{ prediccion }}</p>
+        {% endif %}
+
+        {% if error %}
+        <h3 style="color: red;">Error: {{ error }}</h3>
+        {% endif %}
+    </div>
+    <footer style="text-align: center; margin-top: 20px; padding: 10px; background-color: rgba(0, 0, 0, 0.7); color: white; font-size: 0.9rem;">
+        <p>Desarrollado por Equipo 3 Talento Tech </p>
+        <p>Créditos de imágenes: Imagen de fondo generada con inteligencia artificial por OpenAI.</p>
+        <p>Todos los derechos reservados &copy; 2024</p>
+    </footer>
+</body>
+</html>
